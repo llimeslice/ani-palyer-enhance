@@ -76,7 +76,12 @@ export async function run() {
 
   const video = document.querySelector<HTMLVideoElement>(VIDEO_SELECTOR)!
   const source = video.currentSrc
-  const player = new KPlayer(PLAYER_SELECTOR, { video })
+  video.pause()
+  video.muted = true
+  video.src = ''
+  video.load()
+
+  const player = new KPlayer(PLAYER_SELECTOR)
 
   $('body').addClass('miying')
   player.$wrapper.addClass('miying-player')
