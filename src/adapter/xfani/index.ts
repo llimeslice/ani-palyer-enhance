@@ -3,7 +3,7 @@ import { iframePlayer, runInTop, parser } from './play'
 import './index.scss'
 
 runtime.register({
-  domains: ['.xifanacg.', 'player.moedot'],
+  domains: ['anime.xifanacg.com', 'player.moedot'],
   opts: [
     { test: '/watch', run: runInTop },
     { test: '/watch', run: iframePlayer.runInIframe, runInIframe: true },

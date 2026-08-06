@@ -28,6 +28,7 @@ interface DanmakuConfig {
   danmakuMerge: boolean
   danmakuFontSize: number
   danmakuSpeed: number
+  danmakuSpeedFollowVideo: boolean
   danmakuDensity: number
   danmakuMode: DanmakuMode
   danmakuFilter: string[]
@@ -46,6 +47,7 @@ const defaultConfig = {
   opacity: 0.6,
   showPbp: false,
   danmakuSpeed: 1,
+  danmakuSpeedFollowVideo: true,
   danmakuFontSize: 1,
   danmakuMode: ['top', 'color'],
   danmakuFilter: [],
@@ -184,8 +186,7 @@ class DanmakuPlugin {
           this.core.reload(nextComments)
           this.core.show()
         }
-        this.core.speed =
-          this.baseDanmkuSpeed * this.player.localConfig.danmakuSpeed
+        this.updateDanmakuSpeed()
       }
 
       if (this.player.localConfig.showPbp) {
@@ -242,6 +243,14 @@ class DanmakuPlugin {
     }
 
     return ret
+  }
+
+  updateDanmakuSpeed = () => {
+    if (!this.core) return
+
+    const { danmakuSpeed, danmakuSpeedFollowVideo } = this.player.localConfig
+    const playbackRate = danmakuSpeedFollowVideo ? 1 : 1 / this.player.speed
+    this.core.speed = this.baseDanmkuSpeed * danmakuSpeed * playbackRate
   }
 
   loadEpisode = async (episodeId: string) => {
@@ -476,6 +485,8 @@ class DanmakuPlugin {
       )
     })
 
+    this.player.on('ratechange', this.updateDanmakuSpeed)
+
     this.elements.$danmakuMerge
       .prop('checked', this.player.localConfig.danmakuMerge)
       .on('change', (e) => {
@@ -513,11 +524,19 @@ class DanmakuPlugin {
     addRangeListener({
       $dom: this.elements.$danmakuSpeed,
       name: 'danmakuSpeed',
-      onChange: (v) => {
-        if (this.core) this.core.speed = this.baseDanmkuSpeed * v
-      },
+      onChange: this.updateDanmakuSpeed,
       player: this.player,
     })
+
+    this.elements.$danmakuSpeedFollowVideo
+      .prop('checked', this.player.localConfig.danmakuSpeedFollowVideo)
+      .on('change', (e) => {
+        this.player.configSaveToLocal(
+          'danmakuSpeedFollowVideo',
+          e.target.checked
+        )
+        this.updateDanmakuSpeed()
+      })
 
     addRangeListener({
       $dom: this.elements.$danmakuDensity,

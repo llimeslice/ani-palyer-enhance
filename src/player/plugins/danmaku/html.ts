@@ -70,6 +70,10 @@ export class DanmakuElements {
         <span>弹幕速度</span>
         <input type="range" name="danmakuSpeed" step="0.01" min="0.5" max="1.5" />
       </label>
+      <label class="k-settings-item" title="启用后弹幕速度会随视频倍速变化">
+        <input type="checkbox" name="danmakuSpeedFollowVideo" />
+        <span>弹幕速度跟随视频速度</span>
+      </label>
       <label class="k-settings-item" title="基准为 24 分钟 3000 条弹幕">
         <span>弹幕密度</span>
         <input type="range" name="danmakuDensity" step="0.01" min="0.5" max="2" />
@@ -207,6 +211,9 @@ export class DanmakuElements {
   )
   $opacity = this.$danmaku.find<HTMLInputElement>("[name='opacity']")
   $danmakuSpeed = this.$danmaku.find<HTMLInputElement>("[name='danmakuSpeed']")
+  $danmakuSpeedFollowVideo = this.$danmaku.find<HTMLInputElement>(
+    "[name='danmakuSpeedFollowVideo']"
+  )
   $danmakuFontSize = this.$danmaku.find<HTMLInputElement>(
     "[name='danmakuFontSize']"
   )

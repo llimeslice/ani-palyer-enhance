@@ -1,0 +1,14 @@
+.miying {
+  #k-player-wrapper.miying-player {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    background: #000;
+  }
+
+  &.widescreen {
+    #k-player-wrapper.miying-player {
+      position: fixed;
+    }
+  }
+}
